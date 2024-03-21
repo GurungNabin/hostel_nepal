@@ -20,6 +20,7 @@ class _HostelMainState extends State<HostelMain> {
   final _addressController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _imageController = TextEditingController();
 
   List<XFile>? _images = [];
   final ImagePicker _picker = ImagePicker();
@@ -74,6 +75,7 @@ class _HostelMainState extends State<HostelMain> {
     final address = _addressController.text;
     final email = _emailController.text;
     final phone = _phoneController.text;
+    final image = _imageController.toString();
 
     // Create a HostelModel object
     final hostelData = HostelModel(
@@ -81,6 +83,7 @@ class _HostelMainState extends State<HostelMain> {
       address: address,
       email: email,
       phone: phone,
+      images:  image,
     );
 
     // Send data to API

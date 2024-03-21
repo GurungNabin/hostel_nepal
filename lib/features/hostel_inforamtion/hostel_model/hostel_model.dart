@@ -11,12 +11,14 @@ class HostelModel {
   String address;
   String email;
   String phone;
+  String images;
 
   HostelModel({
     required this.name,
     required this.address,
     required this.email,
     required this.phone,
+    required this.images,
   });
 
   factory HostelModel.fromJson(Map<String, dynamic> json) => HostelModel(
@@ -24,6 +26,7 @@ class HostelModel {
         address: json['address'],
         email: json['email'],
         phone: json['phone'],
+        images: json['images'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -31,5 +34,6 @@ class HostelModel {
         'address': address,
         'email': email,
         'phone': phone,
+        'images': images,
       };
 }

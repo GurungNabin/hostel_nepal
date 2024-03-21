@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hostel_nepal/features/auth/screens/login_screen.dart';
 import 'package:hostel_nepal/media_query/size_config.dart';
 import 'package:hostel_nepal/room_testing.dart';
 
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: RoomDataInputPage(),
+      home: const RoomDataInputPage(),
     );
   }
 }

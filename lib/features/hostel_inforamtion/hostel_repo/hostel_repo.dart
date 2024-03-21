@@ -17,7 +17,8 @@ class HostelApi {
       );
 
       if (response.statusCode == 201 || json.decode(response.body)['status']) {
-        print('Hostel info created successfully');
+        // print('Hostel info created successfully');
+        print(json.decode(response.body)['data']);
       } else {
         print('Failed to create hostel information: ${response.body}');
         throw Exception('Failed to create hostel information');
