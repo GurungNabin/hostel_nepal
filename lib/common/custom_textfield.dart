@@ -10,14 +10,14 @@ class CustomTextField extends StatelessWidget {
   final bool? enabled;
 
   const CustomTextField({
-    super.key,
+    Key? key,
     this.controller,
     required this.hintText,
     this.enabled,
     this.obText = false,
     this.maxLines = 1,
     this.hintStyle, // Provide a default value here if needed
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

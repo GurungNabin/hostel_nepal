@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hostel_nepal/features/hostel_inforamtion/hostel_screen/hostel_screen.dart';
 
 class Member extends StatelessWidget {
   const Member({super.key});
-   static const String routeName = '/member-screen';
+  static const String routeName = '/member-screen';
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +17,12 @@ class Member extends StatelessWidget {
             //new member
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HostelMain(),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => const HostelMain(),
+                //   ),
+                // );
               },
               child: const Card(
                 elevation: 5,

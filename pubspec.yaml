@@ -40,6 +40,12 @@ dependencies:
   image_picker: ^1.0.7
   shared_preferences: ^2.2.2
   connectivity_plus: ^5.0.2
+  path: ^1.9.0
+  google_fonts: ^6.2.1
+  flutter_screenutil: ^5.9.0
+  get: ^4.6.6
+  intl_phone_field: ^3.2.0
+  autocomplete_textfield: ^2.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,35 +1,41 @@
 import 'dart:convert';
 
-List<HostelSeater> hostelSeaterFromJson(String str) => List<HostelSeater>.from(
-    json.decode(str).map((x) => HostelSeater.fromJson(x)));
+List<RoomSeaterModel> roomSeaterFromJson(String str) =>
+    List<RoomSeaterModel>.from(
+        json.decode(str).map((x) => RoomSeaterModel.fromJson(x)));
 
-String hostelSeaterToJson(List<HostelSeater> data) =>
+String roomSeaterToJson(List<RoomSeaterModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class HostelSeater {
+class RoomSeaterModel {
   int hostelId;
-  int hostelRoomSeater;
+  String hostelRoomSeater; // Change type to String
   int total;
   int available;
-  int price;
-  String image;
+  double price;
+  List<String> images;
+  List<String> imagesExtension; // Add imagesExtension property
 
-  HostelSeater({
+  RoomSeaterModel({
     required this.hostelId,
     required this.hostelRoomSeater,
     required this.total,
     required this.available,
     required this.price,
-    required this.image,
+    required this.images,
+    required this.imagesExtension,
   });
 
-  factory HostelSeater.fromJson(Map<String, dynamic> json) => HostelSeater(
+  factory RoomSeaterModel.fromJson(Map<String, dynamic> json) =>
+      RoomSeaterModel(
         hostelId: json['hostel_id'],
         hostelRoomSeater: json['hostel_room_seater'],
         total: json['total'],
         available: json['available'],
-        price: json['price'],
-        image: json['image'],
+        price: json['price'].toDouble(), // Convert to double
+        images: List<String>.from(json['images']),
+        imagesExtension:
+            List<String>.from(json['imagesExtension']), // Parse imagesExtension
       );
 
   Map<String, dynamic> toJson() => {
@@ -38,6 +44,7 @@ class HostelSeater {
         'total': total,
         'available': available,
         'price': price,
-        'image': image,
+        'images': images,
+        'imagesExtension': imagesExtension, // Include imagesExtension in toJson
       };
 }

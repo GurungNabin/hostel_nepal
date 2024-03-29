@@ -25,14 +25,11 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
     return TextFormField(
       controller: widget.controller,
       obscureText: widget.obText,
-      style: const TextStyle(
-          fontSize: 15, color: Colors.black54, fontWeight: FontWeight.normal),
+      style: const TextStyle(fontSize: 16, color: Colors.black),
       decoration: InputDecoration(
-        labelStyle: const TextStyle(
-            fontSize: 15, color: Colors.black54, fontWeight: FontWeight.normal),
+        labelStyle: const TextStyle(fontSize: 15, color: Colors.black54),
         label: Text(widget.label),
-        hintStyle: const TextStyle(
-            fontSize: 15, color: Colors.black54, fontWeight: FontWeight.normal),
+        hintStyle: const TextStyle(fontSize: 15, color: Colors.black54),
         border: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.black38,
@@ -56,7 +53,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       ),
       validator: (val) {
         if (val == null || val.isEmpty) {
-          return 'Enter Your ${widget.hintText}!!';
+          return "Enter Your ${widget.hintText}!!";
         }
         return null;
       },
