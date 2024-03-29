@@ -19,8 +19,8 @@ class HostelMain extends StatefulWidget {
 }
 
 class _HostelMainState extends State<HostelMain> {
-  String cityId = "";
-  String areaId = "";
+  String cityId = '';
+  String areaId = '';
 
   List<String> cityIds = [];
   List<String> areaIds = [];
@@ -48,16 +48,22 @@ class _HostelMainState extends State<HostelMain> {
     {'text': 'Girls', 'value': 3},
   ];
 
+  List<String>? _cityData; // Store the result of getCity()
+  List<String>? _getAreaByCity;
+
   Future<List<String>> getCity() async {
+    if (_cityData != null) {
+      return _cityData!; // Return cached data if available
+    }
+
     try {
       final response = await http
-          .get(Uri.parse("https://collegesnepal.com/api/getCity.php"));
+          .get(Uri.parse('https://collegesnepal.com/api/getCity.php'));
       if (response.statusCode == 200) {
         final List<dynamic> cityData = jsonDecode(response.body);
         cityTitles = cityData.map((city) => city['title'] as String).toList();
         cityIds = cityData.map((city) => city['id'] as String).toList();
-        // print('Dynamic Suggestions: $cityTitles'); // Debugging line
-        // print('City Ids: $cityIds'); //Debugging line
+        _cityData = cityTitles; // Cache the result
       } else {
         throw Exception('Failed to load options');
       }
@@ -69,9 +75,12 @@ class _HostelMainState extends State<HostelMain> {
   }
 
   Future<List<String>> getAreaByCity(String cityId) async {
+    if (_getAreaByCity != null) {
+      return _getAreaByCity!;
+    }
     try {
       final response = await http.get(Uri.parse(
-          "https://collegesnepal.com/api/getAreaByCity.php?cityId=$cityId"));
+          'https://collegesnepal.com/api/getAreaByCity.php?cityId=$cityId'));
       // print('Second API Response: ${response.body}'); // Debugging line
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
@@ -86,7 +95,7 @@ class _HostelMainState extends State<HostelMain> {
       print('Error fetching area data: $e');
       return [];
     }
-    if (cityId == "") {
+    if (cityId == '') {
       areaTitles = [];
     }
     return areaTitles;
@@ -176,6 +185,8 @@ class _HostelMainState extends State<HostelMain> {
                   hid: hostelId,
                 )),
       );
+
+      // Navigator.pushNamed(context, '/room-screen');
     }).catchError((error) {
       // Handle error, for example, show an error message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -191,6 +202,7 @@ class _HostelMainState extends State<HostelMain> {
   void initState() {
     super.initState();
     getCity();
+    getAreaByCity(cityId);
   }
 
   // String dropdownValue = list.first;
@@ -199,7 +211,8 @@ class _HostelMainState extends State<HostelMain> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hostel Form'),
+        title: const Center(child: Text('Hostel Form')),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -244,7 +257,7 @@ class _HostelMainState extends State<HostelMain> {
                     } else {
                       return AutoCompleteTextField(
                         decoration: InputDecoration(
-                            labelText: "City",
+                            labelText: 'City',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                             )),
@@ -265,7 +278,7 @@ class _HostelMainState extends State<HostelMain> {
                           _citySuggestionController.text = item;
                           setState(() {
                             cityId = cityIds[cityTitles.indexOf(item)];
-                            _areaSuggestionController.text = "";
+                            _areaSuggestionController.text = '';
                           });
                         },
                         itemBuilder: (context, item) {
@@ -314,7 +327,7 @@ class _HostelMainState extends State<HostelMain> {
                     } else {
                       return AutoCompleteTextField(
                         decoration: InputDecoration(
-                            labelText: "Area",
+                            labelText: 'Area',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                             )),

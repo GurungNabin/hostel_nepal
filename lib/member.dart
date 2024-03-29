@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hostel_nepal/features/dashboard/dashboard_main.dart';
+import 'package:hostel_nepal/features/hostel/hostel_screen/hostel_screen.dart';
 
 class Member extends StatelessWidget {
   const Member({super.key});
@@ -17,12 +19,14 @@ class Member extends StatelessWidget {
             //new member
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const HostelMain(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HostelMain(
+                      userId: '1',
+                    ),
+                  ),
+                );
               },
               child: const Card(
                 elevation: 5,
@@ -47,12 +51,12 @@ class Member extends StatelessWidget {
             //Old member
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const Dashboard(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DashBoardMain(),
+                  ),
+                );
               },
               child: const Card(
                 elevation: 5,

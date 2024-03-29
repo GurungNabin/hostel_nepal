@@ -137,102 +137,104 @@ class _DashBoardMainState extends State<DashBoardMain> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('DashBoard'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DashboardTest(
-                  roomType: 'Single Seater',
-                  price: singleSeaterData['total_price'] ?? '0',
-                  totalBed: singleSeaterData['total_bed'] ?? '0',
-                  availableBed: singleSeaterData['available_bed'] ?? '0',
-                  onAvailableBedValidationChanged: (isValid) {
-                    // Update the overall validation status
-                    setState(() {
-                      _areAvailableBedsValid = isValid;
-                    });
-                  },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('DashBoard'),
+        ),
+        body: Column(
+          children: [
+            ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DashboardTest(
+                    roomType: 'Single Seater',
+                    price: singleSeaterData['total_price'] ?? '0',
+                    totalBed: singleSeaterData['total_bed'] ?? '0',
+                    availableBed: singleSeaterData['available_bed'] ?? '0',
+                    onAvailableBedValidationChanged: (isValid) {
+                      // Update the overall validation status
+                      setState(() {
+                        _areAvailableBedsValid = isValid;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DashboardTest(
-                  roomType: 'Double Seater',
-                  price: doubleSeaterData['total_price'] ?? '0',
-                  totalBed: doubleSeaterData['total_bed'] ?? '0',
-                  availableBed: doubleSeaterData['available_bed'] ?? '0',
-                  onAvailableBedValidationChanged: (isValid) {
-                    // Update the overall validation status
-                    setState(() {
-                      _areAvailableBedsValid = isValid;
-                    });
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DashboardTest(
+                    roomType: 'Double Seater',
+                    price: doubleSeaterData['total_price'] ?? '0',
+                    totalBed: doubleSeaterData['total_bed'] ?? '0',
+                    availableBed: doubleSeaterData['available_bed'] ?? '0',
+                    onAvailableBedValidationChanged: (isValid) {
+                      // Update the overall validation status
+                      setState(() {
+                        _areAvailableBedsValid = isValid;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DashboardTest(
-                  roomType: 'Triple Seater',
-                  price: tripleSeaterData['total_price'] ?? '0',
-                  totalBed: tripleSeaterData['total_bed'] ?? '0',
-                  availableBed: tripleSeaterData['available_bed'] ?? '0',
-                  onAvailableBedValidationChanged: (isValid) {
-                    // Update the overall validation status
-                    setState(() {
-                      _areAvailableBedsValid = isValid;
-                    });
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DashboardTest(
+                    roomType: 'Triple Seater',
+                    price: tripleSeaterData['total_price'] ?? '0',
+                    totalBed: tripleSeaterData['total_bed'] ?? '0',
+                    availableBed: tripleSeaterData['available_bed'] ?? '0',
+                    onAvailableBedValidationChanged: (isValid) {
+                      // Update the overall validation status
+                      setState(() {
+                        _areAvailableBedsValid = isValid;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DashboardTest(
-                  roomType: 'Fourth Seater',
-                  price: fourSeaterData['total_price'] ?? '0',
-                  totalBed: fourSeaterData['total_bed'] ?? '0',
-                  availableBed: fourSeaterData['available_bed'] ?? '0',
-                  onAvailableBedValidationChanged: (isValid) {
-                    // Update the overall validation status
-                    setState(() {
-                      _areAvailableBedsValid = isValid;
-                    });
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DashboardTest(
+                    roomType: 'Fourth Seater',
+                    price: fourSeaterData['total_price'] ?? '0',
+                    totalBed: fourSeaterData['total_bed'] ?? '0',
+                    availableBed: fourSeaterData['available_bed'] ?? '0',
+                    onAvailableBedValidationChanged: (isValid) {
+                      // Update the overall validation status
+                      setState(() {
+                        _areAvailableBedsValid = isValid;
+                      });
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                if (_areAvailableBedsValid) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const FacilityMain(),
-                    ),
-                  );
-                } else {
-                  // Show an error message or handle the invalid condition
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content:
-                          Text('Available bed cannot be more than Total bed'),
-                    ),
-                  );
-                }
-              },
-              child: const Text('Next'),
+              ],
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_areAvailableBedsValid) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FacilityMain(),
+                      ),
+                    );
+                  } else {
+                    // Show an error message or handle the invalid condition
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Available bed cannot be more than Total bed'),
+                      ),
+                    );
+                  }
+                },
+                child: const Text('Next'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

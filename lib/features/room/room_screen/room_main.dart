@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hostel_nepal/constants/global_variables.dart';
 import 'package:hostel_nepal/features/facility/screen/facility_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
-
 
 class RoomMain extends StatefulWidget {
   const RoomMain({
@@ -15,6 +15,8 @@ class RoomMain extends StatefulWidget {
   });
 
   final String hid;
+
+  static const String routeName = '/room-screen';
 
   @override
   State<RoomMain> createState() => _RoomMainState();
@@ -135,135 +137,161 @@ class _RoomMainState extends State<RoomMain> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.grey, // Specify the border color
-                    width: 1.0, // Specify the border width
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  //single seater
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.grey, // Specify the border color
+                        width: 1.0, // Specify the border width
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        _buildSeaterInput(
+                            'Single Seater',
+                            singleSeaterRoomsController,
+                            singleSeaterAvailabeController,
+                            singleSeaterPriceController,
+                            'One'),
+                        _buildImageSelection(_singleSeaterImages, () async {
+                          await _getSingleImage(1);
+                        }, () async {
+                          await _getMultipleImages(1);
+                        }, 1),
+                      ],
+                    ),
                   ),
-                ),
-                padding: const EdgeInsets.all(5),
-                child: Column(
-                  children: [
-                    _buildSeaterInput(
-                        'Single Seater',
-                        singleSeaterRoomsController,
-                        singleSeaterAvailabeController,
-                        singleSeaterPriceController,
-                        'One'),
-                    _buildImageSelection(_singleSeaterImages, () async {
-                      await _getSingleImage(1);
-                    }, () async {
-                      await _getMultipleImages(1);
-                    }, 1),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.grey, // Specify the border color
-                    width: 1.0, // Specify the border width
+                  const SizedBox(
+                    height: 12,
                   ),
-                ),
-                padding: const EdgeInsets.all(5),
-                child: Column(
-                  children: [
-                    _buildSeaterInput(
-                        'Double Seater',
-                        doubleSeaterRoomsController,
-                        doubleSeaterAvailabeController,
-                        doubleSeaterPriceController,
-                        'Two'),
-                    _buildImageSelection(_doubleSeaterImages, () async {
-                      await _getSingleImage(2);
-                    }, () async {
-                      await _getMultipleImages(2);
-                    }, 2),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.grey, // Specify the border color
-                    width: 1.0, // Specify the border width
+                  const Divider(
+                    color: Colors.red,
                   ),
-                ),
-                padding: const EdgeInsets.all(5),
-                child: Column(
-                  children: [
-                    _buildSeaterInput(
-                        'Triple Seater',
-                        tripleSeaterRoomsController,
-                        tripleSeaterAvailabeController,
-                        tripleSeaterPriceController,
-                        'Three'),
-                    _buildImageSelection(_tripleSeaterImages, () async {
-                      await _getSingleImage(3);
-                    }, () async {
-                      await _getMultipleImages(3);
-                    }, 3),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.grey, // Specify the border color
-                    width: 1.0, // Specify the border width
+
+                  //double seater
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.grey, // Specify the border color
+                        width: 1.0, // Specify the border width
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        _buildSeaterInput(
+                            'Double Seater',
+                            doubleSeaterRoomsController,
+                            doubleSeaterAvailabeController,
+                            doubleSeaterPriceController,
+                            'Two'),
+                        _buildImageSelection(_doubleSeaterImages, () async {
+                          await _getSingleImage(2);
+                        }, () async {
+                          await _getMultipleImages(2);
+                        }, 2),
+                      ],
+                    ),
                   ),
-                ),
-                padding: const EdgeInsets.all(5),
-                child: Column(
-                  children: [
-                    _buildSeaterInput(
-                        'Four Seater',
-                        fourSeaterRoomsController,
-                        fourSeaterAvailabeController,
-                        fourSeaterPriceController,
-                        'Four'),
-                    _buildImageSelection(_fourSeaterImages, () async {
-                      await _getSingleImage(4);
-                    }, () async {
-                      await _getMultipleImages(4);
-                    }, 4),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all<Size>(
-                    const Size(200.0, 35.0),
+                  const SizedBox(
+                    height: 12,
                   ),
-                ),
-                onPressed: _sendDataToServer,
-                child: const Text('Send Room Data'),
+                  const Divider(
+                    color: Colors.red,
+                  ),
+
+                  //triple seater
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.grey, // Specify the border color
+                        width: 1.0, // Specify the border width
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        _buildSeaterInput(
+                            'Triple Seater',
+                            tripleSeaterRoomsController,
+                            tripleSeaterAvailabeController,
+                            tripleSeaterPriceController,
+                            'Three'),
+                        _buildImageSelection(_tripleSeaterImages, () async {
+                          await _getSingleImage(3);
+                        }, () async {
+                          await _getMultipleImages(3);
+                        }, 3),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  const Divider(
+                    color: Colors.red,
+                  ),
+
+                  //four seater
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.grey, // Specify the border color
+                        width: 1.0, // Specify the border width
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        _buildSeaterInput(
+                            'Four Seater',
+                            fourSeaterRoomsController,
+                            fourSeaterAvailabeController,
+                            fourSeaterPriceController,
+                            'Four'),
+                        _buildImageSelection(_fourSeaterImages, () async {
+                          await _getSingleImage(4);
+                        }, () async {
+                          await _getMultipleImages(4);
+                        }, 4),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all<Size>(
+                          const Size(200.0, 35.0),
+                        ),
+                      ),
+                      onPressed: _sendDataToServer,
+                      child: const Text('Send Room Data'),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -278,9 +306,12 @@ class _RoomMainState extends State<RoomMain> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title),
+        Text(
+          title,
+          style: const TextStyle(fontSize: 18, color: Colors.black87),
+        ),
         const SizedBox(
-          height: 5,
+          height: 10,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -299,7 +330,8 @@ class _RoomMainState extends State<RoomMain> {
               ),
             ),
             const SizedBox(width: 5),
-            Expanded(
+            SizedBox(
+              width: 80,
               child: TextField(
                 controller: priceController,
                 keyboardType: TextInputType.number,
@@ -319,7 +351,7 @@ class _RoomMainState extends State<RoomMain> {
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   isDense: true,
-                  labelText: 'Available Room',
+                  labelText: 'Available',
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.teal, width: 1.5),
                   ),
@@ -334,78 +366,81 @@ class _RoomMainState extends State<RoomMain> {
 
   Widget _buildImageSelection(List<XFile>? images, VoidCallback takePhoto,
       VoidCallback uploadImages, int seaterType) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Center the buttons
-          children: [
-            ElevatedButton(
-              onPressed: takePhoto,
-              style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all<Size>(
-                  const Size(170.0, 35.0),
-                ),
-              ),
-              child: const Row(
-                children: [
-                  Icon(Icons.camera_outlined),
-                  Text('Take a Photo'),
-                ],
-              ),
-            ),
-            const SizedBox(width: 5),
-            ElevatedButton(
-              onPressed: uploadImages,
-              style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all<Size>(
-                  const Size(
-                      170.0, 35.0), // Set the width and height of the button
-                ),
-              ),
-              child: const Row(
-                children: [
-                  Icon(Icons.image_outlined),
-                  Text('Upload Images'),
-                ],
-              ),
-            ),
-          ],
-        ),
-        // const SizedBox(height: 20),
-        Center(
-          child: Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center, // Center the buttons
             children: [
-              if (images != null)
-                for (int i = 0; i < images.length; i++)
-                  Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.file(
-                          File(images[i].path),
-                          fit: BoxFit.cover,
-                          width: 100,
-                          height: 100,
-                        ),
-                      ),
-                      Positioned(
-                        top: 4,
-                        right: 4,
-                        child: IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () => _deleteImage(i, seaterType),
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
+              ElevatedButton(
+                onPressed: takePhoto,
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all<Size>(
+                    const Size(170.0, 35.0),
                   ),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.camera_outlined),
+                    Text('Take a Photo'),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 5),
+              ElevatedButton(
+                onPressed: uploadImages,
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all<Size>(
+                    const Size(
+                        170.0, 35.0), // Set the width and height of the button
+                  ),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.image_outlined),
+                    Text('Upload Images'),
+                  ],
+                ),
+              ),
             ],
           ),
-        ),
-      ],
+          // const SizedBox(height: 20),
+          Center(
+            child: Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: [
+                if (images != null)
+                  for (int i = 0; i < images.length; i++)
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.file(
+                            File(images[i].path),
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                          ),
+                        ),
+                        Positioned(
+                          top: 4,
+                          right: 4,
+                          child: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () => _deleteImage(i, seaterType),
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -504,8 +539,8 @@ class _RoomMainState extends State<RoomMain> {
         roomData['hostel_id'] = widget.hid;
       }
 
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const FacilityMain()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const FacilityMain()));
 
       // Make HTTP post request
       final response = await http.post(
@@ -546,6 +581,5 @@ class _RoomMainState extends State<RoomMain> {
       'images': imageUrls,
       'imagesExtension': imagesExtension,
     };
-
   }
 }

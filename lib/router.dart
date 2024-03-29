@@ -3,8 +3,8 @@ import 'package:hostel_nepal/features/auth/forget_passowrd/screen/change_forget_
 import 'package:hostel_nepal/features/auth/forget_passowrd/screen/forget_password_screen.dart';
 import 'package:hostel_nepal/features/auth/auth_screens/login_screen.dart';
 import 'package:hostel_nepal/features/auth/auth_screens/sign_up_screen.dart';
+import 'package:hostel_nepal/features/room/room_screen/room_main.dart';
 import 'package:hostel_nepal/member.dart';
-
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -32,6 +32,15 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case ForgetPassword.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const ForgetPassword());
+
+    case RoomMain.routeName:
+      final arguments = routeSettings.arguments as Map<String, dynamic>;
+      final hostelId = arguments['hostelId'];
+      return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => RoomMain(
+                hid: hostelId,
+              ));
 
     default:
       return MaterialPageRoute(
