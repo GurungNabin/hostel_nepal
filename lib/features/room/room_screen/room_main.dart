@@ -379,13 +379,13 @@ class _RoomMainState extends State<RoomMain> {
                                   fourSeaterAvailabeController,
                                   fourSeaterPriceController,
                                   'Four'),
-                              _buildspecialSeaterInput(
-                                  fourSeaterSpecialCheckbox,
-                                  'Four Seater with bathroom', //Data not found through API
-                                  'Four',
-                                  fourSeaterSpecialRoomsController,
-                                  fourSeaterSpecialAvailabeController,
-                                  fourSeaterSpecialPriceController),
+                              // _buildspecialSeaterInput(
+                              //     fourSeaterSpecialCheckbox,
+                              //     'Four Seater with bathroom', //Data not found through API
+                              //     'Four',
+                              //     fourSeaterSpecialRoomsController,
+                              //     fourSeaterSpecialAvailabeController,
+                              //     fourSeaterSpecialPriceController),
                               _buildImageSelection(
                                 _fourSeaterImages,
                                 () async {
