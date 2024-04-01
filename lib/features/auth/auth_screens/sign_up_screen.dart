@@ -44,6 +44,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     Navigator.pushReplacementNamed(context, '/login-screen');
   }
 
+  bool _isObscure = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,21 +116,36 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   const SizedBox(
                     height: 10,
                   ),
+
+                  //password
                   TextFormField(
                     controller: passwordController,
-                    obscureText: true,
+                    obscureText: _isObscure,
                     keyboardType: TextInputType.visiblePassword,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Password',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isObscure ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
+
+                  //confirm password
                   TextFormField(
                       controller: confirmPasswordController,
-                      obscureText: true,
+                      obscureText: _isObscure,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: const InputDecoration(
                         labelText: 'Confirm Password',

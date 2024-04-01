@@ -41,6 +41,7 @@ class AuthRepository {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+      print(res.body);
       if (!context.mounted) return;
       httpErrorHandle(
         response: res,

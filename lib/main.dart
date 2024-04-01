@@ -8,14 +8,12 @@ import 'package:hostel_nepal/constants/global_variables.dart';
 
 import 'package:hostel_nepal/router.dart';
 
-// nabin@gmail.com
-// #Nabin123
-
-//divya@gyan.com
-//#Gyan123
+//nabin@gmail.com
+//Nabin123#
 
 //ram@gmail.com
 //Ram1234#
+
 void main() async {
   await ScreenUtil.ensureScreenSize();
   runApp(const ProviderScope(child: MyApp()));

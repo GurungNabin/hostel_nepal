@@ -6,6 +6,7 @@ import 'package:hostel_nepal/features/hostel/hostel_screen/hostel_screen.dart';
 
 class Member extends ConsumerStatefulWidget {
   const Member({super.key});
+
   static const String routeName = '/member-screen';
 
   @override
@@ -83,71 +84,73 @@ class _MemberState extends ConsumerState<Member> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //new member
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HostelMain(
-                      userId: '1',
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //new member
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HostelMain(
+                        userId: '1',
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: const Card(
-                elevation: 5,
-                shadowColor: Colors.black87,
-                child: SizedBox(
-                  height: 250,
-                  width: 250,
-                  child: Center(
-                    child: Text(
-                      'New Member',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  );
+                },
+                child: const Card(
+                  elevation: 5,
+                  shadowColor: Colors.black87,
+                  child: SizedBox(
+                    height: 250,
+                    width: 250,
+                    child: Center(
+                      child: Text(
+                        'New Member',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
+              const SizedBox(
+                height: 8,
+              ),
 
-            //Old member
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DashboardMain(
-                      hid: '',
+              //Old member
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DashboardMain(
+                        hid: '',
+                      ),
                     ),
-                  ),
-                );
-              },
-              child: const Card(
-                elevation: 5,
-                shadowColor: Colors.black87,
-                child: SizedBox(
-                  height: 250,
-                  width: 250,
-                  child: Center(
-                    child: Text(
-                      'Old Member',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  );
+                },
+                child: const Card(
+                  elevation: 5,
+                  shadowColor: Colors.black87,
+                  child: SizedBox(
+                    height: 250,
+                    width: 250,
+                    child: Center(
+                      child: Text(
+                        'Old Member',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
