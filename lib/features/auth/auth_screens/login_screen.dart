@@ -112,7 +112,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   controller: emailController,
                   decoration: const InputDecoration(
-                      labelText: "Email", border: OutlineInputBorder()),
+                      labelText: 'Email', border: OutlineInputBorder()),
                 ),
               ),
               Padding(
@@ -122,7 +122,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   obscureText: true,
                   controller: passwordController,
                   decoration: const InputDecoration(
-                    labelText: "Password",
+                    labelText: 'Password',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -165,7 +165,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           if (_loginFormKey.currentState!.validate()) {
                             if (passwordController.text.length < 8) {
                               showSnackBar(
-                                  context, "Please enter a longer password");
+                                  context, 'Please enter a longer password');
                             } else {
                               final connectivityResult =
                                   await (Connectivity().checkConnectivity());
@@ -173,7 +173,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ConnectivityResult.none) {
                                 if (!context.mounted) return;
                                 showSnackBar(context,
-                                    "No internet Connection, Please try again!");
+                                    'No internet Connection, Please try again!');
                               } else {
                                 login(emailController.text,
                                     passwordController.text);
@@ -182,7 +182,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           }
                         },
                         child: const Text(
-                          "Login",
+                          'Login',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 20,
@@ -201,7 +201,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               TextButton(
                 style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(
-                        Color.fromARGB(255, 255, 255, 255))),
+                        Colors.transparent)),
                 onPressed: () {
                   Navigator.of(context).pushNamed('/signup-screen');
                 },

@@ -86,8 +86,8 @@ class _HostelMainState extends State<HostelMain> {
         final List<dynamic> data = jsonDecode(response.body);
         areaTitles = data.map((area) => area['title'] as String).toList();
         areaIds = data.map((area) => area['id'] as String).toList();
-        print("Area Data: $areaTitles");
-        print("Area Indexes: ${areaIds}");
+        print('Area Data: $areaTitles');
+        print('Area Indexes: $areaIds');
       } else {
         throw Exception('Failed to load secondary suggestions');
       }
