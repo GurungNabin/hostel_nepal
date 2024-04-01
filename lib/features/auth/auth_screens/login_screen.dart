@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hostel_nepal/features/auth/auth_controller/auth_controller.dart';
 import 'package:hostel_nepal/constants/utils.dart';
 
-
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
@@ -50,7 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     width: 20,
                   ),
                   Text(
-                    "Loggin in...",
+                    'Loggin in...',
                     style: TextStyle(fontSize: 12, color: Colors.black87),
                   )
                 ],

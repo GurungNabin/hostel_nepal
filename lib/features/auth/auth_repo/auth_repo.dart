@@ -8,7 +8,7 @@ import 'package:hostel_nepal/constants/error_handleing.dart';
 import 'package:hostel_nepal/constants/global_variables.dart';
 import 'package:hostel_nepal/constants/utils.dart';
 import 'package:hostel_nepal/member.dart';
-import 'package:hostel_nepal/features/userModel/user_model.dart';
+import 'package:hostel_nepal/providers/userModel/user_model.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -54,7 +54,7 @@ class AuthRepository {
         },
       );
     } catch (e) {
-      showSnackBar(context, "Cannot create an new account");
+      showSnackBar(context, 'Cannot create an new account');
     }
   }
 
@@ -63,7 +63,6 @@ class AuthRepository {
     required String email,
     required String password,
   }) async {
-    // UserModel? userModel;
     try {
       http.Response res = await http.post(
         Uri.parse('$uri/loginuser.php'),
@@ -73,6 +72,8 @@ class AuthRepository {
         },
       );
       print('Hello error');
+      print(res.body);
+
       if (!context.mounted) return;
       print('hello error 2');
       httpErrorHandle(
@@ -83,17 +84,18 @@ class AuthRepository {
             ref
                 .read(userDataProvider.notifier)
                 .update((state) => userModelFromJson(res.body));
-            showSnackBar(context, "Successfully logged in!");
+            showSnackBar(context, 'Successfully logged in!');
             SharedPreferences prefs = await SharedPreferences.getInstance();
             await prefs.setString(
                 'x-auth-token', jsonDecode(res.body)['token']);
+
             if (!context.mounted) return;
             Navigator.pushNamedAndRemoveUntil(
                 context, Member.routeName, (route) => false);
           });
       print('thank you');
     } catch (e) {
-      print("err in sign in user");
+      print('err in sign in user');
     }
   }
 
@@ -103,7 +105,7 @@ class AuthRepository {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      await sharedPreferences.setString('x-auth-token', "");
+      await sharedPreferences.setString('x-auth-token', '');
       if (!context.mounted) return;
       Navigator.pushNamedAndRemoveUntil(
           context, LoginScreen.routeName, (route) => false);

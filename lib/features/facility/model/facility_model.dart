@@ -1,21 +1,21 @@
 import 'dart:convert';
 
-List<Facility> facilityFromJson(String str) =>
-    List<Facility>.from(json.decode(str).map((x) => Facility.fromJson(x)));
+List<FacilityModel> facilityFromJson(String str) => List<FacilityModel>.from(
+    json.decode(str).map((x) => FacilityModel.fromJson(x)));
 
-String facilityToJson(List<Facility> data) =>
+String facilityToJson(List<FacilityModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Facility {
+class FacilityModel {
   String id;
   String title;
 
-  Facility({
+  FacilityModel({
     required this.id,
     required this.title,
   });
 
-  factory Facility.fromJson(Map<String, dynamic> json) => Facility(
+  factory FacilityModel.fromJson(Map<String, dynamic> json) => FacilityModel(
         id: json['id'],
         title: json['title'],
       );

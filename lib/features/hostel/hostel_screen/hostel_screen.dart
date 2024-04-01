@@ -212,7 +212,7 @@ class _HostelMainState extends State<HostelMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Hostel Form')),
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

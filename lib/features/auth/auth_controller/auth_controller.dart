@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hostel_nepal/features/auth/auth_repo/auth_repo.dart';
-import 'package:hostel_nepal/features/userModel/user_model.dart';
-
+import 'package:hostel_nepal/providers/userModel/user_model.dart';
 
 final authControllerProvider = Provider((ref) {
   final authRepository = ref.watch(authRepositoryProvider);

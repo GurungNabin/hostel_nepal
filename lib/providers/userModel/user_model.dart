@@ -35,18 +35,18 @@ class UserModel {
       );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["id"],
-        token: json["token"],
-        email: json["email"],
-        phoneNumber: json["phonenumber"],
-        username: json["username"],
+        id: json['id'],
+        token: json['token'],
+        email: json['email'],
+        phoneNumber: json['phonenumber'],
+        username: json['username'],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "token": token,
-        "email": email,
-        "phonenumber": phoneNumber,
-        "username": username,
+        'id': id,
+        'token': token,
+        'email': email,
+        'phonenumber': phoneNumber,
+        'username': username,
       };
 }

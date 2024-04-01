@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hostel_nepal/features/auth/auth_controller/auth_controller.dart';
 import 'package:hostel_nepal/constants/utils.dart';
 
-
-
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
@@ -41,6 +39,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         password: passwordController.text,
         phone: phoneController.text,
         name: nameController.text);
+
+    // Navigate to the login screen
+    Navigator.pushReplacementNamed(context, '/login-screen');
   }
 
   @override
@@ -84,7 +85,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     controller: nameController,
                     keyboardType: TextInputType.name,
                     decoration: const InputDecoration(
-                      labelText: "Name",
+                      labelText: 'Name',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -95,7 +96,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     controller: phoneController,
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
-                      labelText: "Phone",
+                      labelText: 'Phone',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -106,7 +107,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
-                      labelText: "Email",
+                      labelText: 'Email',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -118,7 +119,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     obscureText: true,
                     keyboardType: TextInputType.visiblePassword,
                     decoration: const InputDecoration(
-                      labelText: "Password",
+                      labelText: 'Password',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -130,7 +131,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: const InputDecoration(
-                        labelText: "Confirm Password",
+                        labelText: 'Confirm Password',
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
@@ -155,19 +156,19 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                               if (_signUpFormKey.currentState!.validate()) {
                                 if (phoneController.text.isEmpty) {
                                   showSnackBar(context,
-                                      "Please enter your phone number");
+                                      'Please enter your phone number');
                                 } else if (!RegExp(
                                         r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$')
                                     .hasMatch(passwordController.text)) {
                                   showSnackBar(context,
-                                      "Please enter a valid password with at least one uppercase letter, one lowercase letter, one digit, and a minimum length of 8 characters.");
+                                      'Please enter a valid password with at least one uppercase letter, one lowercase letter, one digit, and a minimum length of 8 characters.');
                                 } else {
                                   signUpUser();
                                 }
                               }
                             },
                             child: const Text(
-                              "Register",
+                              'Register',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 20,

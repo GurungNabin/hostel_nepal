@@ -96,7 +96,7 @@ class _RuleFormState extends State<RuleForm> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const DashBoardMain()));
+                        builder: (context) => const DashboardMain(hid: '',)));
               },
               child: const Text('Next'),
             ),

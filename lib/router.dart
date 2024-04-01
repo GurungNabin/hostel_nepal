@@ -8,6 +8,7 @@ import 'package:hostel_nepal/member.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
+    
     case SignupScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const SignupScreen());

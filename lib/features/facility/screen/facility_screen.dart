@@ -3,7 +3,6 @@ import 'package:hostel_nepal/features/facility/model/facility_model.dart';
 import 'package:hostel_nepal/features/facility/repository/facility_repo.dart';
 import 'package:hostel_nepal/features/rule/rule_screen/rule.dart';
 
-
 class FacilityMain extends StatefulWidget {
   const FacilityMain({
     super.key,
@@ -15,13 +14,13 @@ class FacilityMain extends StatefulWidget {
 
 class _FacilityMainState extends State<FacilityMain> {
   final FacilityService _facilityService = FacilityService();
-  late Future<List<Facility>> _futureFacilities;
+  late Future<List<FacilityModel>> _futureFacilities;
   late List<bool> _isSelectedList;
 
   @override
   void initState() {
     super.initState();
-    _futureFacilities = _facilityService.getFacility(context: context);
+    _futureFacilities = _facilityService.getFacility();
     _isSelectedList = [];
   }
 
@@ -36,7 +35,7 @@ class _FacilityMainState extends State<FacilityMain> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: FutureBuilder<List<Facility>>(
+              child: FutureBuilder<List<FacilityModel>>(
                 future: _futureFacilities,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -51,7 +50,7 @@ class _FacilityMainState extends State<FacilityMain> {
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
-                        Facility facility = snapshot.data![index];
+                        FacilityModel facility = snapshot.data![index];
                         return ListTile(
                           title: Text(facility.title),
                           leading: Checkbox(

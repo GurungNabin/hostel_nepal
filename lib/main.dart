@@ -13,6 +13,9 @@ import 'package:hostel_nepal/router.dart';
 
 //divya@gyan.com
 //#Gyan123
+
+//ram@gmail.com
+//Ram1234#
 void main() async {
   await ScreenUtil.ensureScreenSize();
   runApp(const ProviderScope(child: MyApp()));
@@ -64,7 +67,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           useMaterial3: false,
         ),
         onGenerateRoute: (settings) => generateRoute(settings),
-        home: Splashscreen(
+        home: SplashScreen(
           data: data,
         ),
       ),
