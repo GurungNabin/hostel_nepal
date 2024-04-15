@@ -28,9 +28,23 @@ class _RoomMainState extends State<RoomMain> {
   TextEditingController singleSeaterAvailabeController =
       TextEditingController();
 
+  TextEditingController singleSeaterSpecialRoomsController =
+      TextEditingController();
+  TextEditingController singleSeaterSpecialPriceController =
+      TextEditingController();
+  TextEditingController singleSeaterSpecialAvailabeController =
+      TextEditingController();
+
   TextEditingController doubleSeaterRoomsController = TextEditingController();
   TextEditingController doubleSeaterPriceController = TextEditingController();
   TextEditingController doubleSeaterAvailabeController =
+      TextEditingController();
+
+  TextEditingController doubleSeaterSpecialRoomsController =
+      TextEditingController();
+  TextEditingController doubleSeaterSpecialPriceController =
+      TextEditingController();
+  TextEditingController doubleSeaterSpecialAvailabeController =
       TextEditingController();
 
   TextEditingController tripleSeaterRoomsController = TextEditingController();
@@ -38,17 +52,36 @@ class _RoomMainState extends State<RoomMain> {
   TextEditingController tripleSeaterAvailabeController =
       TextEditingController();
 
+  TextEditingController tripleSeaterSpecialRoomsController =
+      TextEditingController();
+  TextEditingController tripleSeaterSpecialPriceController =
+      TextEditingController();
+  TextEditingController tripleSeaterSpecialAvailabeController =
+      TextEditingController();
+
   TextEditingController fourSeaterRoomsController = TextEditingController();
   TextEditingController fourSeaterPriceController = TextEditingController();
   TextEditingController fourSeaterAvailabeController = TextEditingController();
+
+  TextEditingController fourSeaterSpecialRoomsController =
+      TextEditingController();
+  TextEditingController fourSeaterSpecialPriceController =
+      TextEditingController();
+  TextEditingController fourSeaterSpecialAvailabeController =
+      TextEditingController();
 
   List<XFile>? _singleSeaterImages = [];
   List<XFile>? _doubleSeaterImages = [];
   List<XFile>? _tripleSeaterImages = [];
   List<XFile>? _fourSeaterImages = [];
 
-  final ImagePicker _picker = ImagePicker();
+  ValueNotifier<bool> singleSeaterSpecialCheckbox = ValueNotifier<bool>(false);
+  ValueNotifier<bool> doubleSeaterSpecialCheckbox = ValueNotifier<bool>(false);
+  ValueNotifier<bool> tripleSeaterSpecialCheckbox = ValueNotifier<bool>(false);
+  ValueNotifier<bool> fourSeaterSpecialCheckbox = ValueNotifier<bool>(false);
+  List<String>? _roomData; // Store the result of getCity()
 
+  final ImagePicker _picker = ImagePicker();
   Future<void> _getSingleImage(int seaterType) async {
     try {
       final XFile? pickedFile =
@@ -129,6 +162,39 @@ class _RoomMainState extends State<RoomMain> {
     });
   }
 
+  List<String> roomIds = [];
+  // List<String> areaIds = [];
+  List<String> roomTitles = [];
+  // List<String> areaTitles = []
+  Future<List<String>> getRooms() async {
+    if (_roomData != null) {
+      return _roomData!; // Return cached data if available
+    }
+    try {
+      final response = await http
+          .get(Uri.parse('https://collegesnepal.com/api/getseaterlist.php'));
+      if (response.statusCode == 200) {
+        final List<dynamic> roomData = jsonDecode(response.body);
+        roomTitles = roomData.map((room) => room['title'] as String).toList();
+        roomIds = roomData.map((room) => room['id'] as String).toList();
+        _roomData = roomTitles; // Cache the result
+        print(_roomData);
+      } else {
+        throw Exception('Failed to load options');
+      }
+    } catch (e) {
+      print('Error fetching room data: $e');
+      return [];
+    }
+    return roomTitles;
+  }
+
+  @override
+  void initState() {
+    getRooms();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,161 +203,225 @@ class _RoomMainState extends State<RoomMain> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+        child: FutureBuilder<List<String>>(
+          future: getRooms(), // Your method to fetch room data
+          builder:
+              (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                  child: CircularProgressIndicator()); // Show loading animation
+            } else if (snapshot.hasError) {
+              return const Center(
+                  child: Text('Error fetching data')); // Show error message
+            } else {
+              // Assuming getRooms() returns a list of room titles
+              _roomData = snapshot.data; // Cache the result
+              return Stack(
                 children: [
-                  //single seater
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.grey, // Specify the border color
-                        width: 1.0, // Specify the border width
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(5),
+                  SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        _buildSeaterInput(
-                            'Single Seater',
-                            singleSeaterRoomsController,
-                            singleSeaterAvailabeController,
-                            singleSeaterPriceController,
-                            'One'),
-                        _buildImageSelection(_singleSeaterImages, () async {
-                          await _getSingleImage(1);
-                        }, () async {
-                          await _getMultipleImages(1);
-                        }, 1),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const Divider(
-                    color: Colors.red,
-                  ),
-
-                  //double seater
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.grey, // Specify the border color
-                        width: 1.0, // Specify the border width
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(5),
-                    child: Column(
-                      children: [
-                        _buildSeaterInput(
-                            'Double Seater',
-                            doubleSeaterRoomsController,
-                            doubleSeaterAvailabeController,
-                            doubleSeaterPriceController,
-                            'Two'),
-                        _buildImageSelection(_doubleSeaterImages, () async {
-                          await _getSingleImage(2);
-                        }, () async {
-                          await _getMultipleImages(2);
-                        }, 2),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const Divider(
-                    color: Colors.red,
-                  ),
-
-                  //triple seater
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.grey, // Specify the border color
-                        width: 1.0, // Specify the border width
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(5),
-                    child: Column(
-                      children: [
-                        _buildSeaterInput(
-                            'Triple Seater',
-                            tripleSeaterRoomsController,
-                            tripleSeaterAvailabeController,
-                            tripleSeaterPriceController,
-                            'Three'),
-                        _buildImageSelection(_tripleSeaterImages, () async {
-                          await _getSingleImage(3);
-                        }, () async {
-                          await _getMultipleImages(3);
-                        }, 3),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const Divider(
-                    color: Colors.red,
-                  ),
-
-                  //four seater
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.grey, // Specify the border color
-                        width: 1.0, // Specify the border width
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(5),
-                    child: Column(
-                      children: [
-                        _buildSeaterInput(
-                            'Four Seater',
-                            fourSeaterRoomsController,
-                            fourSeaterAvailabeController,
-                            fourSeaterPriceController,
-                            'Four'),
-                        _buildImageSelection(_fourSeaterImages, () async {
-                          await _getSingleImage(4);
-                        }, () async {
-                          await _getMultipleImages(4);
-                        }, 4),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all<Size>(
-                          const Size(200.0, 35.0),
+                        //single seater
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Specify the border color
+                              width: 1.0, // Specify the border width
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              _buildSeaterInput(
+                                  _roomData![0],
+                                  singleSeaterRoomsController,
+                                  singleSeaterAvailabeController,
+                                  singleSeaterPriceController,
+                                  'One'),
+                              _buildspecialSeaterInput(
+                                  singleSeaterSpecialCheckbox,
+                                  _roomData![1],
+                                  'One',
+                                  singleSeaterSpecialRoomsController,
+                                  singleSeaterSpecialAvailabeController,
+                                  singleSeaterSpecialPriceController),
+                              _buildImageSelection(
+                                _singleSeaterImages,
+                                () async {
+                                  await _getSingleImage(1);
+                                },
+                                () async {
+                                  await _getMultipleImages(1);
+                                },
+                                1,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      onPressed: _sendDataToServer,
-                      child: const Text('Send Room Data'),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        const Divider(
+                          color: Colors.red,
+                        ),
+
+                        //double seater
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Specify the border color
+                              width: 1.0, // Specify the border width
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              _buildSeaterInput(
+                                  _roomData![2],
+                                  doubleSeaterRoomsController,
+                                  doubleSeaterAvailabeController,
+                                  doubleSeaterPriceController,
+                                  'Two'),
+                              _buildspecialSeaterInput(
+                                  doubleSeaterSpecialCheckbox,
+                                  _roomData![3],
+                                  'Two',
+                                  doubleSeaterSpecialRoomsController,
+                                  doubleSeaterSpecialAvailabeController,
+                                  doubleSeaterSpecialPriceController),
+                              _buildImageSelection(
+                                _doubleSeaterImages,
+                                () async {
+                                  await _getSingleImage(2);
+                                },
+                                () async {
+                                  await _getMultipleImages(2);
+                                },
+                                2,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        const Divider(
+                          color: Colors.red,
+                        ),
+
+                        //triple seater
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Specify the border color
+                              width: 1.0, // Specify the border width
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              _buildSeaterInput(
+                                  _roomData![4],
+                                  tripleSeaterRoomsController,
+                                  tripleSeaterAvailabeController,
+                                  tripleSeaterPriceController,
+                                  'Three'),
+                              _buildspecialSeaterInput(
+                                  tripleSeaterSpecialCheckbox,
+                                  _roomData![5],
+                                  'Three',
+                                  tripleSeaterSpecialRoomsController,
+                                  tripleSeaterSpecialAvailabeController,
+                                  tripleSeaterSpecialPriceController),
+                              _buildImageSelection(
+                                _tripleSeaterImages,
+                                () async {
+                                  await _getSingleImage(3);
+                                },
+                                () async {
+                                  await _getMultipleImages(3);
+                                },
+                                3,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        const Divider(
+                          color: Colors.red,
+                        ),
+
+                        //four seater
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey, // Specify the border color
+                              width: 1.0, // Specify the border width
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              _buildSeaterInput(
+                                  _roomData![6],
+                                  fourSeaterRoomsController,
+                                  fourSeaterAvailabeController,
+                                  fourSeaterPriceController,
+                                  'Four'),
+                              // _buildspecialSeaterInput(
+                              //     fourSeaterSpecialCheckbox,
+                              //     'Four Seater with bathroom', //Data not found through API
+                              //     'Four',
+                              //     fourSeaterSpecialRoomsController,
+                              //     fourSeaterSpecialAvailabeController,
+                              //     fourSeaterSpecialPriceController),
+                              _buildImageSelection(
+                                _fourSeaterImages,
+                                () async {
+                                  await _getSingleImage(4);
+                                },
+                                () async {
+                                  await _getMultipleImages(4);
+                                },
+                                4,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              fixedSize: MaterialStateProperty.all<Size>(
+                                const Size(200.0, 35.0),
+                              ),
+                            ),
+                            onPressed: _sendDataToServer,
+                            child: const Text('Send Room Data'),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  )
                 ],
-              ),
-            ),
-          ],
+              );
+            }
+          },
         ),
       ),
     );
@@ -364,8 +494,12 @@ class _RoomMainState extends State<RoomMain> {
     );
   }
 
-  Widget _buildImageSelection(List<XFile>? images, VoidCallback takePhoto,
-      VoidCallback uploadImages, int seaterType) {
+  Widget _buildImageSelection(
+    List<XFile>? images,
+    VoidCallback takePhoto,
+    VoidCallback uploadImages,
+    int seaterType,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -378,7 +512,7 @@ class _RoomMainState extends State<RoomMain> {
                 onPressed: takePhoto,
                 style: ButtonStyle(
                   fixedSize: MaterialStateProperty.all<Size>(
-                    const Size(170.0, 35.0),
+                    const Size(150.0, 35.0),
                   ),
                 ),
                 child: const Row(
@@ -394,7 +528,7 @@ class _RoomMainState extends State<RoomMain> {
                 style: ButtonStyle(
                   fixedSize: MaterialStateProperty.all<Size>(
                     const Size(
-                        170.0, 35.0), // Set the width and height of the button
+                        150.0, 35.0), // Set the width and height of the button
                   ),
                 ),
                 child: const Row(
@@ -441,6 +575,48 @@ class _RoomMainState extends State<RoomMain> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildspecialSeaterInput(
+      ValueNotifier<bool> checkboxNotifier,
+      String title,
+      String seaterType,
+      TextEditingController roomsController,
+      TextEditingController availableController,
+      TextEditingController priceController) {
+    return Padding(
+      padding: const EdgeInsets.all(0),
+      child: Column(children: [
+        ValueListenableBuilder<bool>(
+          valueListenable: checkboxNotifier,
+          builder: (context, value, child) {
+            return CheckboxListTile(
+              dense: true,
+              // checkColor: Colors.orange,
+              activeColor: GlobalVariables.mainColor,
+
+              title: const Text('Attached Washrooms available?'),
+              value: value,
+              onChanged: (bool? newValue) {
+                checkboxNotifier.value = newValue ?? false;
+              },
+            );
+          },
+        ),
+        ValueListenableBuilder<bool>(
+          valueListenable: checkboxNotifier,
+          builder: (context, value, child) {
+            if (value) {
+              return _buildSeaterInput(title, roomsController,
+                  availableController, priceController, seaterType);
+            } else {
+              return const SizedBox
+                  .shrink(); // Return an empty widget when not needed
+            }
+          },
+        ),
+      ]),
     );
   }
 
