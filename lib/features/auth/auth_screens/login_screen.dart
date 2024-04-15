@@ -72,176 +72,161 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
-  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _loginFormKey,
-              child: Column(children: [
-                const SizedBox(
-                  height: 50,
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.only(top: 50.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _loginFormKey,
+            child: Column(children: [
+              const SizedBox(
+                height: 50,
+              ),
+              const Text(
+                'Welcome Back!',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
                 ),
-                const Text(
-                  'Welcome Back!',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Please sign in to your account',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                      labelText: 'Email', border: OutlineInputBorder()),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: true,
+                  controller: passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  'Please sign in to your account',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(
-                  height: 60,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                        labelText: 'Email', border: OutlineInputBorder()),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: _isObscure,
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isObscure ? Icons.visibility : Icons.visibility_off,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isObscure = !_isObscure;
-                          });
-                        },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/forgot-password-screen');
+                    },
+                    child: const Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/forgot-password-screen');
-                      },
-                      child: const Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: MaterialButton(
-                          color: Colors.black,
-                          minWidth: MediaQuery.of(context).size.width * .7,
-                          onPressed: () async {
-                            if (_loginFormKey.currentState!.validate()) {
-                              if (passwordController.text.length < 8) {
-                                showSnackBar(
-                                    context, "Please enter a longer password");
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: MaterialButton(
+                        color: Colors.black,
+                        minWidth: MediaQuery.of(context).size.width * .7,
+                        onPressed: () async {
+                          if (_loginFormKey.currentState!.validate()) {
+                            if (passwordController.text.length < 8) {
+                              showSnackBar(
+                                  context, 'Please enter a longer password');
+                            } else {
+                              final connectivityResult =
+                                  await (Connectivity().checkConnectivity());
+                              if (connectivityResult ==
+                                  ConnectivityResult.none) {
+                                if (!context.mounted) return;
+                                showSnackBar(context,
+                                    'No internet Connection, Please try again!');
                               } else {
-                                final connectivityResult =
-                                    await (Connectivity().checkConnectivity());
-                                if (connectivityResult ==
-                                    ConnectivityResult.none) {
-                                  if (!context.mounted) return;
-                                  showSnackBar(context,
-                                      "No internet Connection, Please try again!");
-                                } else {
-                                  login(emailController.text,
-                                      passwordController.text);
-                                }
+                                login(emailController.text,
+                                    passwordController.text);
                               }
                             }
-                          },
-                          child: const Text(
-                            "Login",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          }
+                        },
+                        child: const Text(
+                          "Login",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 50,
-                ),
-                TextButton(
-                  style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(
-                          Color.fromARGB(255, 255, 255, 255))),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/signup-screen');
-                  },
-                  child: RichText(
-                    text: const TextSpan(children: [
-                      TextSpan(
-                        text: 'Don\'t have an accout? ',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              TextButton(
+                style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(
+                        Color.fromARGB(255, 255, 255, 255))),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/signup-screen');
+                },
+                child: RichText(
+                  text: const TextSpan(children: [
+                    TextSpan(
+                      text: 'Don\'t have an accout? ',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
-                      TextSpan(
-                        text: ' Signup',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    TextSpan(
+                      text: ' Signup',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ]),
-                  ),
+                    ),
+                  ]),
                 ),
-              ]),
-            ),
+              ),
+            ]),
           ),
         ),
       ),
